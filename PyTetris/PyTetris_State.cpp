@@ -3,6 +3,21 @@
 #include "PyTetris_State.h"
 #include "PyTetris_Window.h"
 
+PyState* duplicate(PyState* original) {
+	PyObject* arg = Py_BuildValue("ii", original->screen.w, original->screen.h);
+	PyState* dup = (PyState*)PyObject_CallObject((PyObject*)&PyState_Type, arg);
+	Py_DECREF(arg);
+	dup->bag = original->bag;
+	dup->block_hold = original->block_hold;
+	dup->block_next = original->block_next;
+	dup->btb = original->btb;
+	dup->combo = original->combo;
+	dup->hold_used = original->hold_used;
+	std::copy(&original->screen.data[0], &original->screen.data[original->screen.w * original->screen.h],
+		&dup->screen.data[0]);
+	return dup;
+}
+
 PyTypeObject PyState_Type{
 	.ob_base = PyObject_HEAD_INIT(NULL)
 	.tp_name = "PyTetris.State",
@@ -98,8 +113,9 @@ PyObject* PyState_set_bag(PyState* self, PyObject* args) {
 }
 
 PyObject* PyState_copy(PyState* self, PyObject* Py_UNUSED(ignore)) {
-	PyObject* arg = Py_BuildValue("ii", 10, 20);
-	PyObject* dup = PyObject_CallObject((PyObject*)&PyState_Type, arg);
-	Py_DECREF(arg);
-	return dup;
+	return (PyObject*)duplicate(self);
+}
+
+PyObject* PyState_transitions(PyState* self, PyObject* Py_UNUSED(ignore)) {
+	return (PyObject*) duplicate(self);
 }
