@@ -116,6 +116,19 @@ PyObject* PyState_copy(PyState* self, PyObject* Py_UNUSED(ignore)) {
 	return (PyObject*)duplicate(self);
 }
 
-PyObject* PyState_transitions(PyState* self, PyObject* Py_UNUSED(ignore)) {
-	return (PyObject*) duplicate(self);
+PyObject* PyState_transitions(PyState* self, PyObject* args) {
+	int bx = 3,
+		by = -2,
+		br = 0; // TODO: bx = 4 when type == 3
+	if (!PyArg_ParseTuple(args, "|iii", &bx, &by, &br)) {
+		return NULL;
+	}
+	PyObject* ret = PyList_New(0);
+	vector<Pos> pos_list = available_spots(self->screen, self->block_next[0]);
+	for (int i = 0; i < pos_list.size(); i++) {
+		path_op c_path = search_path_and_op(self->screen, self->block_next[0], Pos{ bx, by, br }, pos_list.back());
+		if (c_path.path.size() == 0) continue;
+
+	}
+	return ret;
 }

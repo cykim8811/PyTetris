@@ -130,7 +130,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);C:\Users\cykim\Anaconda3\lib\site-packages\numpy\core\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);$(ProjectDir)numpy\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <CallingConvention>StdCall</CallingConvention>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -146,7 +146,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary Condition="$(PythonCoreDVersion) == ''">MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);C:\Users\cykim\Anaconda3\lib\site-packages\numpy\core\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);$(ProjectDir)numpy\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <CallingConvention>StdCall</CallingConvention>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -164,7 +164,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);C:\Users\cykim\Anaconda3\lib\site-packages\numpy\core\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);$(ProjectDir)numpy\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -183,7 +183,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>Multithreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);C:\Users\cykim\Anaconda3\lib\site-packages\numpy\core\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PythonHome)Include;%(AdditionalIncludeDirectories);$(ProjectDir)numpy\include;$(ProjectDir)SDL2\include</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>

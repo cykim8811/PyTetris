@@ -23,7 +23,7 @@ int index(vector<Node>::iterator _begin, vector<Node>::iterator _end, Pos target
 int index(vector<Pos>::iterator _begin, vector<Pos>::iterator _end, Pos target);
 
 
-path_op search_path_and_op(Map screen, int type, Pos from, Pos to);
+path_op search_path_and_op(Map &screen, int type, Pos from, Pos to);
 
 vector<Pos> available_spots(Map &screen, int type);
 vector<Pos> available_spots_strict(Map &screen, int type, Pos start);

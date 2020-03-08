@@ -33,7 +33,7 @@ int calc_F(int G, Pos p, Pos to) {
     return G + abs(p.x - to.x)*16 + abs(p.y - to.y) + min((p.r - to.r + 4) % 4, (to.r - p.r + 4) % 4)*8;
 }
 
-path_op search_path_and_op(Map screen, int type, Pos from, Pos to) {
+path_op search_path_and_op(Map &screen, int type, Pos from, Pos to) {
     int w = screen.w,
         h = screen.h;
 
