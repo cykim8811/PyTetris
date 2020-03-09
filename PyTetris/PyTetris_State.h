@@ -52,6 +52,7 @@ PyObject* PyState_set_bag(PyState* self, PyObject* args);
 PyObject* PyState_copy(PyState* self, PyObject* Py_UNUSED(ignore));
 
 PyObject* PyState_transitions(PyState* self, PyObject* args);
+PyObject* PyState_hold(PyState* self, PyObject* Py_UNUSED(ignore));
 
 
 static PyMethodDef PyState_methods[] = {
@@ -63,6 +64,7 @@ static PyMethodDef PyState_methods[] = {
     {"get_bag", (PyCFunction)PyState_get_bag, METH_NOARGS, "" },
     {"copy", (PyCFunction)PyState_copy, METH_NOARGS, "" },
     {"transitions", (PyCFunction)PyState_transitions, METH_VARARGS, "" },
+    {"holded", (PyCFunction)PyState_hold, METH_NOARGS, "" },
     {NULL}  /* Sentinel */
 };
 

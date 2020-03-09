@@ -246,3 +246,20 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 	}
 	return ret;
 }
+
+PyObject* PyState_hold(PyState* self, PyObject* Py_UNUSED(ignore)) {
+	PyState* ret = duplicate(self);
+	if (ret->hold_used)
+		Py_RETURN_NONE;
+	if (ret->block_hold == -1) {
+		ret->block_hold = ret->block_next[0];
+		ret->block_next.erase(ret->block_next.begin());
+		if (ret->bag.size() == 0) {
+			for (int i = 0; i < 7; i++) ret->bag.push_back(i);
+			shuffle(ret->bag.begin(), ret->bag.end(), default_random_engine((unsigned)time(0)));
+		}
+		ret->block_next.push_back(ret->bag.front());
+		ret->bag.erase(ret->bag.begin());
+	}
+	return ret;
+}
