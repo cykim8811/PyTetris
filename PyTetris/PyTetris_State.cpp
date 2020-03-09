@@ -177,6 +177,8 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 			// Multiple Line Bonus
 			score += clear_score[clear_count];
 
+			bool isbtb = false;
+
 			// T-spin detection
 			if (self->block_next[0] == 5 && (c_path.operations.back() == TK_SPIN || c_path.operations.back() == TK_REVERSED_SPIN)) {
 				int block_count = 0;
@@ -186,6 +188,7 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 				if (c_pos.x == self->screen.w - 2 || c_pos.y == self->screen.h - 2 || self->screen.at(c_pos.x + 2, c_pos.y + 2)) block_count++;
 
 				if (block_count >= 3) { // Detect T-spin
+					isbtb = true;
 					if (self->btb) {
 						score += 1; // Back to back Bonus
 					}
@@ -195,7 +198,7 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 						self->screen.fit(self->block_next[0], Pos{ c_pos.x, c_pos.y + 1, c_pos.r }) ||
 						self->screen.fit(self->block_next[0], Pos{ c_pos.x, c_pos.y - 1, c_pos.r })
 						) { // T-spin mini
-						score += 0; // tspin mini 
+						score += 0;
 					}
 					else {
 						score += clear_count * 2;
@@ -205,6 +208,7 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 
 			// Tetris detection
 			if (clear_count == 4) {
+				isbtb = true;
 				if (self->btb) {
 					score += 1; // Back to back Bonus
 				}
@@ -223,6 +227,9 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 			}
 			if (empty) {
 				score += 10;
+			}
+			if (!isbtb) {
+				c_state->btb = false;
 			}
 		}
 		else {
@@ -261,5 +268,11 @@ PyObject* PyState_hold(PyState* self, PyObject* Py_UNUSED(ignore)) {
 		ret->block_next.push_back(ret->bag.front());
 		ret->bag.erase(ret->bag.begin());
 	}
+	else {
+		int temp = ret->block_hold;
+		ret->block_hold = ret->block_next[0];
+		ret->block_next[0] = temp;
+	}
+	ret->hold_used = false;
 	return ret;
 }
