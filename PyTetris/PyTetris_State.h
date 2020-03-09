@@ -7,6 +7,14 @@
 #include "Player.h"
 #include "Analyzer.h"
 
+static int combo_score[12] = {
+    0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4
+};
+
+static int clear_score[5] = {
+    0, 0, 1, 2, 4
+};
+
 typedef struct PyState :PyObject {
     PyObject_HEAD;
     PyState() {}

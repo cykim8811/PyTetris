@@ -63,7 +63,7 @@ PyMODINIT_FUNC PyInit_PyTetris() {
     PyModule_AddFunctions(module, PyTetris_functions);
 
     PyModule_AddStringConstant(module, "__author__", "cykim");
-    PyModule_AddStringConstant(module, "__version__", "0.0.1");
+    PyModule_AddStringConstant(module, "__version__", "0.1.0");
     PyModule_AddIntConstant(module, "year", 2020);
 
     import_array();

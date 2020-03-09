@@ -6,7 +6,7 @@ import os
 ldr = os.listdir("./")
 cpplist = [x for x in ldr if x[-4:] == ".cpp"]
 
-setup(name = 'PyTetris', version = '0.0.1',
+setup(name = 'PyTetris', version = '0.1.0',
       ext_modules = [
           Extension('PyTetris', cpplist,
                     include_dirs = ["./SDL2/include"],

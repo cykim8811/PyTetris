@@ -27,6 +27,7 @@ PyObject* PyWindow_get_screen(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_get_falling_type(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_get_falling_pos(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_get_state(PyWindow* self, PyObject* Py_UNUSED(ignored));
+PyObject* PyWindow_set_state(PyWindow* self, PyObject* args);
 
 static PyMethodDef PyWindow_methods[] = {
     {"tick", (PyCFunction)PyWindow_tick, METH_NOARGS,
@@ -43,6 +44,9 @@ static PyMethodDef PyWindow_methods[] = {
     },
     {"get_state", (PyCFunction)PyWindow_get_state, METH_NOARGS,
     "Return state"
+    },
+    {"set_state", (PyCFunction)PyWindow_set_state, METH_VARARGS,
+    "set to state"
     },
     {NULL}  /* Sentinel */
 };

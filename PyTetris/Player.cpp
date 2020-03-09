@@ -75,4 +75,5 @@ bool Player::hold() {
 		return false;
 	}
 	window->key_input(TK_HOLD);
+	return true;
 }

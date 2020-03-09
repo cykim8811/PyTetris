@@ -53,6 +53,7 @@ class Map
 public:
     Map();
 	Map(int _width, int _height);
+    Map(int _width, int _height, vector<int> _data);
 	Map(PyObject* _data);
 	Map(const Map& target);
     Map(int _width, int _height, int* data);
@@ -60,11 +61,11 @@ public:
 
     bool allocate(int _width = 10, int _height = 20);
 
-    bool alloc = true;
+    bool alloc = false;
 
     int w, h;
 
-    int* data;
+    vector<int> data;
 	int at(int x, int y);
 	void set(int x, int y, int _data);
 	bool fit(int type, Pos position);

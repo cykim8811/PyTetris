@@ -7,43 +7,48 @@ Map::Map() {
 }
 
 Map::Map(int _width, int _height) {
-    npy_intp dims[2] = { _width, _height };
-    data = new int[_width * _height]();
+    data.resize(_width * _height);
     w = _width;
     h = _height;
     alloc = true;
 }
 
 Map::Map(int _width, int _height, int* _data) {
-    npy_intp dims[2] = { _width, _height };
+    data.resize(w * h);
+    for (int i = 0; i < w * h; i++) {
+        data[i] = *(_data + i);
+    }
+    w = _width;
+    h = _height;
+}
+
+Map::Map(int _width, int _height, vector<int> _data) {
     data = _data;
     w = _width;
     h = _height;
-    alloc = false;
+    alloc = true;
 }
 
 Map::Map(PyObject* _data) {
     PyArrayObject* target = (PyArrayObject*)_data;
     w = (int)target->dimensions[0];
     h = (int)target->dimensions[1];
-    data = new int[w * h]();
+    data.resize(w * h);
     for (int i = 0; i < w * h; i++) {
         data[i] = *((int*)target->data + i);
     }
+    alloc = true;
 }
 
 Map::Map(const Map& target) {
     w = target.w;
     h = target.h;
-    data = new int[w * h]();
-    std::copy(target.data, target.data + w * h, data);
+    data = target.data;
     alloc = true;
 }
 
 Map::~Map() {
-    if (alloc) {
-        delete[] data;
-    }
+    alloc = false;
 }
 
 bool Map::allocate(int _width, int _height) {
@@ -53,7 +58,7 @@ bool Map::allocate(int _width, int _height) {
     alloc = true;
     w = _width;
     h = _height;
-    data = new int[w * h]();
+    data.resize(w * h);
     return true;
 }
 
