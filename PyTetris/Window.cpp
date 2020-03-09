@@ -398,6 +398,7 @@ void Window::game_end() {
 }
 
 void Window::gravity() {
+	if (!has_gravity) { return; }
 	Pos newpos = { falling_pos.x, falling_pos.y + 1, falling_pos.r };
 	if (map.fit(falling_type, newpos)) {
 		falling_pos = newpos;

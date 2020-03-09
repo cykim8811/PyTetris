@@ -151,7 +151,7 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 		for (int cy = self->screen.h - 1; cy >= 0; cy--) {
 			bool full = true;
 			for (int cx = 0; cx < self->screen.w; cx++) {
-				if (!self->screen.at(cx, cy)) {
+				if (!c_state->screen.at(cx, cy)) {
 					full = false;
 					break;
 				}

@@ -28,6 +28,7 @@ PyObject* PyWindow_get_falling_type(PyWindow* self, PyObject* Py_UNUSED(ignored)
 PyObject* PyWindow_get_falling_pos(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_get_state(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_set_state(PyWindow* self, PyObject* args);
+PyObject* PyWindow_set_gravity(PyWindow* self, PyObject* args);
 
 static PyMethodDef PyWindow_methods[] = {
     {"tick", (PyCFunction)PyWindow_tick, METH_NOARGS,
@@ -47,6 +48,9 @@ static PyMethodDef PyWindow_methods[] = {
     },
     {"set_state", (PyCFunction)PyWindow_set_state, METH_VARARGS,
     "set to state"
+    },
+    {"set_gravity", (PyCFunction)PyWindow_set_gravity, METH_VARARGS,
+    "set gravity"
     },
     {NULL}  /* Sentinel */
 };

@@ -79,3 +79,13 @@ PyObject* PyWindow_set_state(PyWindow* self, PyObject* args) {
 
 	Py_RETURN_NONE;
 }
+PyObject* PyWindow_set_gravity(PyWindow* self, PyObject* args) {
+
+	int target;
+	if (!PyArg_ParseTuple(args, "i", &target)) {
+		return NULL;
+	}
+	self->window.has_gravity = target;
+
+	Py_RETURN_NONE;
+}

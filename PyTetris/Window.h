@@ -41,6 +41,7 @@ public:
 	int next_n = 5;
 
 	int gravity_delay = 800;
+	int has_gravity = 1;
 
 	// Game data
 	Map map = Map(10, 20);
