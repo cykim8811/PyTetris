@@ -60,6 +60,14 @@ PyMODINIT_FUNC PyInit_PyTetris() {
         return NULL;
     }
 
+    PyModule_AddIntConstant(module, "TK_LEFT", TK_LEFT);
+    PyModule_AddIntConstant(module, "TK_RIGHT", TK_RIGHT);
+    PyModule_AddIntConstant(module, "TK_DOWN", TK_DOWN);
+    PyModule_AddIntConstant(module, "TK_SPIN", TK_SPIN);
+    PyModule_AddIntConstant(module, "TK_REVERSED_SPIN", TK_REVERSED_SPIN);
+    PyModule_AddIntConstant(module, "TK_DROP", TK_DROP);
+    PyModule_AddIntConstant(module, "TK_HOLD", TK_HOLD);
+
     PyModule_AddFunctions(module, PyTetris_functions);
 
     PyModule_AddStringConstant(module, "__author__", "cykim");

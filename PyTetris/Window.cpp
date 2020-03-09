@@ -407,3 +407,4 @@ void Window::gravity() {
 		check();
 	}
 }
+

@@ -89,3 +89,13 @@ PyObject* PyWindow_set_gravity(PyWindow* self, PyObject* args) {
 
 	Py_RETURN_NONE;
 }
+PyObject* PyWindow_key_input(PyWindow* self, PyObject* args) {
+
+	int key;
+	if (!PyArg_ParseTuple(args, "i", &key)) {
+		return NULL;
+	}
+	self->window.key_input(key);
+
+	Py_RETURN_NONE;
+}
