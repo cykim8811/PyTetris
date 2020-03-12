@@ -2,6 +2,11 @@
 #include <Python.h>
 #include <SDL.h>
 
+/*
+ * Python Tetris module (PyTetris)
+ * cykim8811@snu.ac.kr
+ */
+
 #define PY_ARRAY_UNIQUE_SYMBOL PyTetris_Array_API
 #include <structmember.h>
 #include "numpy/arrayobject.h"

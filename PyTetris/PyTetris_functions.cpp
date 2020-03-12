@@ -24,6 +24,7 @@ PyObject* PyTetris_available_spots(PyObject* self, PyObject* args, PyObject* kwa
         *(((int*)ret->data) + i * 3 + 2) = res[i].r;
     }
 
+    Py_DECREF(map);
     return (PyObject*)ret;
 }
 
@@ -56,6 +57,7 @@ PyObject* PyTetris_available_spots_strict(PyObject* self, PyObject* args, PyObje
         *(((int*)ret->data) + i * 3 + 2) = res[i].r;
     }
 
+    Py_DECREF(map);
     return (PyObject*)ret;
 }
 
@@ -135,5 +137,6 @@ PyObject* PyTetris_search_path_op(PyObject* self, PyObject* args, PyObject* kwar
     PyObject* ret = Py_BuildValue("OO", retp, reto);
     Py_DECREF(retp);
     Py_DECREF(reto);
+    Py_DECREF(map);
     return ret;
 }

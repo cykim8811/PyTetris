@@ -29,6 +29,7 @@ PyObject* PyWindow_get_falling_pos(PyWindow* self, PyObject* Py_UNUSED(ignored))
 PyObject* PyWindow_get_state(PyWindow* self, PyObject* Py_UNUSED(ignored));
 PyObject* PyWindow_set_state(PyWindow* self, PyObject* args);
 PyObject* PyWindow_set_gravity(PyWindow* self, PyObject* args);
+PyObject* PyWindow_set_ghost(PyWindow* self, PyObject* args);
 PyObject* PyWindow_key_input(PyWindow* self, PyObject* args);
 
 static PyMethodDef PyWindow_methods[] = {
@@ -52,6 +53,9 @@ static PyMethodDef PyWindow_methods[] = {
     },
     {"set_gravity", (PyCFunction)PyWindow_set_gravity, METH_VARARGS,
     "set gravity"
+    },
+    {"set_ghost", (PyCFunction)PyWindow_set_ghost, METH_VARARGS,
+    "set ghost visibility"
     },
     {"key_input", (PyCFunction)PyWindow_key_input, METH_VARARGS,
     "input key"

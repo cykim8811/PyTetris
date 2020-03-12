@@ -76,6 +76,7 @@ PyObject* PyWindow_set_state(PyWindow* self, PyObject* args) {
 			self->window.map.set(x, y, target->screen.at(x, y));
 		}
 	}
+	Py_DECREF(target);
 
 	Py_RETURN_NONE;
 }
@@ -86,6 +87,16 @@ PyObject* PyWindow_set_gravity(PyWindow* self, PyObject* args) {
 		return NULL;
 	}
 	self->window.has_gravity = target;
+
+	Py_RETURN_NONE;
+}
+PyObject* PyWindow_set_ghost(PyWindow* self, PyObject* args) {
+
+	int target;
+	if (!PyArg_ParseTuple(args, "i", &target)) {
+		return NULL;
+	}
+	self->window.show_ghost = target;
 
 	Py_RETURN_NONE;
 }

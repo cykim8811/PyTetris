@@ -42,6 +42,7 @@ public:
 
 	int gravity_delay = 800;
 	int has_gravity = 1;
+	int show_ghost = 1;
 
 	// Game data
 	Map map = Map(10, 20);

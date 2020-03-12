@@ -50,6 +50,21 @@ int PyState_init(PyState* self, PyObject* args, PyObject* kwds) {
 		return NULL;
 	}
 	self->screen.allocate(w, h);
+
+
+	self->bag.clear();
+	self->block_next.clear();
+	for (int i = 0; i < 7; i++) self->bag.push_back(i);
+	shuffle(self->bag.begin(), self->bag.end(), default_random_engine((unsigned)time(0)));
+	for (int i = 0; i < 6; i++) {
+		self->block_next.push_back(self->bag.back());
+		self->bag.pop_back();
+	}
+	self->block_hold = -1;
+	self->btb = 0;
+	self->combo = 0;
+	self->hold_used = 0;
+
 	return 0;
 }
 
@@ -87,6 +102,7 @@ PyObject* PyState_set_screen(PyState* self, PyObject* args) {
 	
 	self->screen.~Map();
 	self->screen = Map((PyObject*)map);
+	Py_DECREF(map);
 	Py_RETURN_NONE;
 }
 
@@ -108,7 +124,7 @@ PyObject* PyState_set_bag(PyState* self, PyObject* args) {
 	for (int i = 0; i < map->dimensions[0]; i++) {
 		self->bag.push_back(*((int*)map->data + i));
 	}
-
+	Py_DECREF(map);
 	Py_RETURN_NONE;
 }
 
@@ -138,8 +154,10 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 	vector<Pos> pos_list = available_spots(self->screen, self->block_next[0]);
 	for (int i = 0; i < pos_list.size(); i++) {
 		Pos c_pos = pos_list[i];
+
 		path_op c_path = search_path_and_op(self->screen, self->block_next[0], Pos{ bx, by, br }, c_pos);
 		if (c_path.path.size() == 0) continue;
+
 
 		// Create new substate
 		int score = 0;
@@ -148,6 +166,7 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 
 		int clear_count = 0;
 
+		// Erase lines
 		for (int cy = self->screen.h - 1; cy >= 0; cy--) {
 			bool full = true;
 			for (int cx = 0; cx < self->screen.w; cx++) {
@@ -167,8 +186,8 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 				clear_count++;
 			}
 		}
+		
 		if (clear_count > 0) { // when line cleared
-
 			// Combo Bonus
 			if (c_state->combo < 12) { score += combo_score[c_state->combo]; }
 			else if (c_state->combo >= 12) { score += 5; }
@@ -193,15 +212,15 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 						score += 1; // Back to back Bonus
 					}
 					c_state->btb = true;
-					if (self->screen.fit(self->block_next[0], Pos{ c_pos.x + 1, c_pos.y, c_pos.r }) ||
-						self->screen.fit(self->block_next[0], Pos{ c_pos.x - 1, c_pos.y, c_pos.r }) ||
-						self->screen.fit(self->block_next[0], Pos{ c_pos.x, c_pos.y + 1, c_pos.r }) ||
-						self->screen.fit(self->block_next[0], Pos{ c_pos.x, c_pos.y - 1, c_pos.r })
-						) { // T-spin mini
+					Pos A = c_path.path[c_path.path.size() - 1];
+					Pos B = c_path.path[c_path.path.size() - 2];
+					if ((A.x != B.x || A.y != B.y ) && clear_count == 1) { // T-spin mini
 						score += 0;
 					}
 					else {
-						score += clear_count * 2;
+						if (clear_count == 1) score += 2;
+						if (clear_count == 2) score += 3;
+						if (clear_count == 3) score += 4;
 					}
 				}
 			}
@@ -217,9 +236,9 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 
 			// Perfect Clear detection
 			bool empty = true;
-			for (int cy = 0; cy <self->screen.h; cy++) {
-				for (int cx = 0; cx < self->screen.w; cx++) {
-					if (self->screen.at(cx, cy)) {
+			for (int cy = 0; cy < c_state->screen.h; cy++) {
+				for (int cx = 0; cx < c_state->screen.w; cx++) {
+					if (c_state->screen.at(cx, cy)) {
 						empty = false;
 						break;
 					}
@@ -239,9 +258,11 @@ PyObject* PyState_transitions(PyState* self, PyObject* args) {
 		// change state
 		c_state->block_next.erase(c_state->block_next.begin());
 		if (c_state->bag.size() == 0) {
+			c_state->bag.reserve(7);
 			for (int i = 0; i < 7; i++) c_state->bag.push_back(i);
 			shuffle(c_state->bag.begin(), c_state->bag.end(), default_random_engine((unsigned)time(0)));
 		}
+		c_state->hold_used = false;
 		c_state->block_next.push_back(c_state->bag.front());
 		c_state->bag.erase(c_state->bag.begin());
 		PyObject* op = Py_BuildValue("iii", c_pos.x, c_pos.y, c_pos.r);
@@ -273,6 +294,6 @@ PyObject* PyState_hold(PyState* self, PyObject* Py_UNUSED(ignore)) {
 		ret->block_hold = ret->block_next[0];
 		ret->block_next[0] = temp;
 	}
-	ret->hold_used = false;
+	ret->hold_used = true;
 	return ret;
 }

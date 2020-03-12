@@ -187,15 +187,17 @@ void Window::draw() {
 		}
 	}
 
-	Block* ghost_block = &Tile[falling_type][ghost.r];
-	for (int x = 0; x < ghost_block->size; x++) {
-		for (int y = 0; y < ghost_block->size; y++) {
-			if (!ghost_block->at(x, y)) continue;
-			if (!map.contains(ghost.x + x, ghost.y + y)) continue;
-			const int d = falling_type;
-			SDL_SetRenderDrawColor(renderer, TileColor[d][0] * 0.6 + 255 * 0.4, TileColor[d][1] * 0.6 + 255 * 0.4, TileColor[d][2] * 0.6 + 255 * 0.4, 255);
-			rect = SDL_Rect{ 32 * (6 + ghost.x + x), 32 * (1 + ghost.y + y), 32, 32 };
-			SDL_RenderFillRect(renderer, &rect);
+	if (show_ghost) {
+		Block* ghost_block = &Tile[falling_type][ghost.r];
+		for (int x = 0; x < ghost_block->size; x++) {
+			for (int y = 0; y < ghost_block->size; y++) {
+				if (!ghost_block->at(x, y)) continue;
+				if (!map.contains(ghost.x + x, ghost.y + y)) continue;
+				const int d = falling_type;
+				SDL_SetRenderDrawColor(renderer, TileColor[d][0] * 0.6 + 255 * 0.4, TileColor[d][1] * 0.6 + 255 * 0.4, TileColor[d][2] * 0.6 + 255 * 0.4, 255);
+				rect = SDL_Rect{ 32 * (6 + ghost.x + x), 32 * (1 + ghost.y + y), 32, 32 };
+				SDL_RenderFillRect(renderer, &rect);
+			}
 		}
 	}
 

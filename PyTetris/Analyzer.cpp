@@ -30,7 +30,9 @@ int index(vector<Pos>::iterator _begin, vector<Pos>::iterator _end, Pos target) 
 }
 
 int calc_F(int G, Pos p, Pos to) {
-    return G + abs(p.x - to.x)*16 + abs(p.y - to.y) + min((p.r - to.r + 4) % 4, (to.r - p.r + 4) % 4)*8;
+	return G + abs(p.x - to.x) * 16 +
+        abs(p.y - to.y) +
+        min((p.r - to.r + 4) % 4, (to.r - p.r + 4) % 4) * 8;
 }
 
 path_op search_path_and_op(Map &screen, int type, Pos from, Pos to) {
@@ -78,14 +80,15 @@ path_op search_path_and_op(Map &screen, int type, Pos from, Pos to) {
             break;
         }
 
-        vector<Pos> neighbor;
-        neighbor.push_back(Pos{ selected.pos.x - 1, selected.pos.y, selected.pos.r });
-        neighbor.push_back(Pos{ selected.pos.x + 1, selected.pos.y, selected.pos.r });
-        neighbor.push_back(Pos{ selected.pos.x, selected.pos.y + 1, selected.pos.r });
-        neighbor.push_back(screen.rotate(type, selected.pos, 1));
-        neighbor.push_back(screen.rotate(type, selected.pos, -1));
+		Pos neighbor[5] = {
+		    Pos{ selected.pos.x - 1, selected.pos.y, selected.pos.r },
+		    Pos{ selected.pos.x + 1, selected.pos.y, selected.pos.r },
+		    Pos{ selected.pos.x, selected.pos.y + 1, selected.pos.r },
+		    screen.rotate(type, selected.pos, 1),
+		    screen.rotate(type, selected.pos, -1),
+		};
 
-        for (int i = 0; i < neighbor.size(); i++) { // i : operation, so neighbor vector should not be shuffled
+        for (int i = 0; i < 5; i++) { // i : operation, so neighbor vector should not be shuffled
             Pos c_neigbor = neighbor[i];
             if (!map.contains(c_neigbor.x, c_neigbor.y, c_neigbor.r)) continue;
             if (!*map.at(c_neigbor.x, c_neigbor.y, c_neigbor.r)) continue;
@@ -117,6 +120,9 @@ path_op search_path_and_op(Map &screen, int type, Pos from, Pos to) {
     vector<Pos> ret_node;
     vector<int> ret_oper;
 
+    ret_node.reserve(25);
+    ret_oper.reserve(25);
+
     ret_node.push_back(opened_nodes.back().pos);
     ret_oper.push_back(opened_nodes.back().operation);
 
@@ -126,8 +132,9 @@ path_op search_path_and_op(Map &screen, int type, Pos from, Pos to) {
         ret_oper.push_back(closed_nodes[prev].operation);
         prev = closed_nodes[prev].parent;
     }
-    reverse(ret_node.begin(), ret_node.end());
-    reverse(ret_oper.begin(), ret_oper.end());
+
+    std::reverse(ret_node.begin(), ret_node.end());
+    std::reverse(ret_oper.begin(), ret_oper.end());
 
     return path_op{ ret_node, ret_oper };
 
